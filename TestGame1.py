@@ -22,17 +22,16 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption(game_title)
 clock = pygame.time.Clock()
 
-car_start_x = (display_width * 0.45)
+
 car_speed = 5
 
-x = car_start_x
 y = (display_height * 0.8)
 
 ####################### Draw commands
 def draw():
     draw_background()
     #draw_objects()
-    draw_player(x,y)
+    #draw_player(x,y)
     #draw_npcs()
     #draw_projectiles()
     #draw_ui()
@@ -56,8 +55,7 @@ def draw_ui():
     print('No UI yet')
 
 def crash():
-    message_display('You crashed, boi')
-    x = car_start_x
+    message_display('You crashed')
 
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -78,7 +76,8 @@ def message_display(text):
 def game_loop():
     x_change = 0
     gameExit = False
-    global x
+    car_start_x = (display_width * 0.45)
+    x = car_start_x
 
     while not gameExit:
         for event in pygame.event.get():
@@ -86,7 +85,7 @@ def game_loop():
                 gameExit = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    x_change += -car_speed
+                    x_change -= car_speed
                 if event.key == pygame.K_RIGHT:
                     x_change += car_speed
 
@@ -94,10 +93,11 @@ def game_loop():
                 if event.key == pygame.K_LEFT:
                     x_change += car_speed
                 if event.key == pygame.K_RIGHT:
-                    x_change += -car_speed
+                    x_change -= car_speed
 
         x += x_change
         draw()
+        draw_player(x, y)
 
         if x > display_width - car_width or x < 0:
             crash()
